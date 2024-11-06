@@ -76,3 +76,5 @@ DerivedDataCache/*
 # Other
 .vsconfig
 VRPBS_A0.sln
+
+Content/StarterContent/*
