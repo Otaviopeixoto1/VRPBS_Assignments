@@ -27,23 +27,24 @@ MassPoint::updateCurPos(float deltaT)
 {
 	if (m_movable)
 	{
-		m_velocity += m_force / m_mass * deltaT;
-		FVector newPrevPos = m_currPos;
-
 		//Euler:
+		//m_velocity += m_force / m_mass * deltaT;
 		//m_currPos += m_velocity * deltaT;
 		
 		//Verlet
+		FVector newPrevPos = m_currPos;
 		if (is_first_iteration)
 		{
-			m_currPos += 0.5f * m_velocity * deltaT; //assuming that starting velocity == 0
+			m_currPos += m_velocity * deltaT + 0.5f * m_force / m_mass * deltaT * deltaT;
+			is_first_iteration = false;
 		}
 		else
 		{
-			m_currPos = 2 * m_currPos - m_prevPos + m_velocity * deltaT;
+			m_currPos = 2 * m_currPos - m_prevPos + m_force / m_mass * deltaT * deltaT;
 		}
 		
 		m_prevPos = newPrevPos;
+		m_velocity = (m_currPos - m_prevPos) / deltaT;
 	}
 	m_force = FVector::ZeroVector;
 }
